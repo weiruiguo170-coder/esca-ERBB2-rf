@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+title: "食管癌 ERBB2/HER2 靶向药物敏感性预测复现仓库"
+message: "如果本仓库对你的研究有帮助，请按以下信息引用。"
+type: software
+authors:
+  - family-names: "待填写"
+    given-names: "作者"
+version: "1.0.0"
+date-released: "2026-03-20"
+license: "MIT"
+repository-code: "https://github.com/<your-account>/<your-repo>"
+abstract: "基于 CCLE 与 GDSC 公开数据，复现食管癌 ERBB2/HER2 靶向药物敏感性预测流程并生成论文图表。"

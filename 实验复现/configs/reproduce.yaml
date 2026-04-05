@@ -1,0 +1,20 @@
+modeling:
+  rf_grid_full:
+    n_estimators: [200, 300, 400, 500, 600, 700, 800]
+    max_depth: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    min_samples_split: [2, 4, 6, 8, 10]
+  rf_grid_quick:
+    n_estimators: [200, 400]
+    max_depth: [6, 10]
+    min_samples_split: [2, 6]
+  rf_grid_lite:
+    n_estimators: [200]
+    max_depth: [6]
+    min_samples_split: [2]
+  svr_grid:
+    C: [0.1, 1, 10, 100]
+    gamma: [0.0001, 0.001, 0.01, 0.1]
+
+feature_engineering:
+  variance_threshold: 0.01
+  bootstrap_target_n: 480

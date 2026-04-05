@@ -1,0 +1,72 @@
+project:
+  name: esca-erbb2-rf-lightweight-repro
+  random_seed: 42
+
+paths:
+  input_csv: data/input/gdsc_ccle_merged_input.csv
+  output_dir: outputs/repro_run
+
+data:
+  id_col: CELL_LINE_ID
+  tissue_col: TISSUE
+  tissue_keywords:
+    - esophagus
+    - oesophagus
+    - upper digestive
+  drug_col: DRUG_NAME
+  ic50_col: IC50
+  required_features:
+    - EXP_ERBB2
+    - CNV_ERBB2
+    - EXP_GRB7
+    - EXP_ERBB3
+    - EXP_PIK3CA
+    - EXP_AKT1
+    - EXP_MAPK1
+    - EXP_PTK6
+    - EXP_CCND1
+    - EXP_SHC1
+
+target:
+  name: y_combined_log2_ic50
+  drugs:
+    - Trastuzumab
+    - Lapatinib
+  require_all_drugs: true
+
+split:
+  train_ratio: 0.7
+  random_state: 42
+
+bootstrap:
+  target_n: 480
+
+model_selection:
+  strategy: paper_best  # paper_best | grid_search
+  cv_folds: 5
+  rf_n_jobs: 1
+  rf_grid:
+    n_estimators: [200, 300, 400, 500, 600, 700, 800]
+    max_depth: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    min_samples_split: [2, 4, 6, 8, 10]
+  paper_best:
+    n_estimators: 500
+    max_depth: 10
+    min_samples_split: 4
+
+baselines:
+  linear_regression: true
+  svr_rbf:
+    enabled: true
+    C: 10.0
+    gamma: scale
+
+feature_importance:
+  permutation_repeats_demo: 5
+  permutation_repeats_full: 30
+  spearman_threshold: 0.7
+
+runtime:
+  demo:
+    n_cell_lines: 24
+

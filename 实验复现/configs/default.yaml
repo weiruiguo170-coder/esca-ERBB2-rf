@@ -1,0 +1,75 @@
+project:
+  name: esca-erbb2-drug-sensitivity-repro
+  random_seed: 42
+
+paths:
+  raw_data_dir: data/raw
+  processed_data_dir: data/processed
+  intermediate_dir: intermediate
+  results_dir: results
+  figures_dir: figures
+
+raw_files:
+  ccle_expression_gct: CCLE_RNAseq_genes_rpkm_20180929.gct.gz
+  ccle_absolute_xlsx: CCLE_ABSOLUTE_combined_20181227.xlsx
+  cell_annotations_txt: Cell_lines_annotations_20181226.txt
+  gdsc2_dose_response_xlsx: GDSC2_fitted_dose_response_27Oct23.xlsx
+  screened_compounds_csv: screened_compounds_rel_8.5.csv
+
+pipeline:
+  prefer_cached_intermediate: true
+
+drug_filters:
+  keywords:
+    - HER2
+    - ERBB2
+    - ERBB
+    - pan-HER
+    - lapatinib
+    - afatinib
+    - neratinib
+    - dacomitinib
+
+cell_line_filters:
+  keywords:
+    - esophagus
+    - oesophagus
+    - esophageal
+    - gastroesophageal
+    - gej
+
+feature_engineering:
+  target_column: LN_IC50
+  focus_genes:
+    - ERBB2
+    - GRB7
+    - ERBB3
+    - PIK3CA
+    - AKT1
+    - MAPK1
+    - PTK6
+    - CCND1
+    - SHC1
+  drop_columns:
+    - LN_IC50
+  variance_threshold: 0.01
+  use_bootstrap: true
+  bootstrap_target_n: 480
+  annotation_map:
+    ERBB2: HER2/ERBB2 主轴核心受体
+    ERBB2_CNV: ERBB2 位点拷贝数特征
+    GRB7: ERBB2 邻近衔接分子
+    ERBB3: ERBB 家族共受体
+    PIK3CA: PI3K-AKT 通路关键节点
+    AKT1: PI3K-AKT 下游效应分子
+    MAPK1: MAPK/ERK 通路核心分子
+    PTK6: 上皮肿瘤相关酪氨酸激酶
+    CCND1: 细胞周期调控分子
+    SHC1: RTK 信号衔接分子
+
+modeling:
+  mode: quick_lite
+  train_ratio: 0.7
+  cv_folds: 5
+  n_jobs: -1
+  enable_svr: true
