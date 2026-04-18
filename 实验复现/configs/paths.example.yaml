@@ -1,0 +1,15 @@
+﻿# Example path override file.
+# Copy this file and adjust values if your local folder names differ.
+paths:
+  expression_input: data/input/expression.csv
+  cnv_input: data/input/cnv.csv
+  drug_response_input: data/input/drug_response.csv
+  pathway_genes_input: data/input/erbb2_pathway_genes.txt
+
+# Required drug_response.csv columns:
+# - cell_line_id
+# - source (GDSC/CCLE)
+# - tissue_group (use "upper_gi" for rows to keep)
+# - erbb2_axis_relevant (1 to keep, 0 to drop)
+# - trastuzumab_ic50
+# - lapatinib_ic50

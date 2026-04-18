@@ -1,0 +1,7 @@
+﻿cell_line_id,source,tissue_group,erbb2_axis_relevant,trastuzumab_ic50,lapatinib_ic50
+CL_001,GDSC,upper_gi,1,2.60,1.85
+CL_002,CCLE,upper_gi,1,3.10,2.44
+CL_003,GDSC,upper_gi,1,2.20,1.90
+CL_004,CCLE,upper_gi,1,4.60,3.20
+CL_005,GDSC,upper_gi,1,1.95,1.62
+CL_999,GDSC,other,0,7.20,5.80

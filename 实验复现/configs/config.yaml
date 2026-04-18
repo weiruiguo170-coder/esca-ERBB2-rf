@@ -1,0 +1,111 @@
+﻿project:
+  name: erbb2_axis_drug_sensitivity_repro
+  random_state: 42
+
+data:
+  source_databases:
+    - GDSC
+    - CCLE
+  tissue_group_value: upper_gi
+  erbb2_axis_flag_value: 1
+  pathway_gene_list_required: true
+
+split:
+  test_size: 0.3
+
+preprocess:
+  imputation: train_mean
+  standardization: zscore_train_stats
+  variance_threshold: 0.01
+  expression_prefix: expr__
+  cnv_prefix: cnv__
+
+bootstrap:
+  n_samples: 480
+
+modeling:
+  cv_folds: 5
+  rf:
+    n_estimators_start: 200
+    n_estimators_end: 800
+    n_estimators_step: 100
+    max_depth_start: 4
+    max_depth_end: 14
+    min_samples_split_values: [2, 4, 6, 8, 10]
+    oob_score: true
+    paper_best:
+      n_estimators: 500
+      max_depth: 10
+      min_samples_split: 4
+  svr:
+    c_values: [0.1, 1, 10, 100]
+    gamma_values: [0.0001, 0.001, 0.01, 0.1]
+
+importance:
+  permutation_repeats: 30
+  random_state: 42
+  spearman_abs_threshold: 0.7
+  top_k: 10
+
+enrichment:
+  p_cutoff: 0.05
+  fdr_cutoff: 0.25
+  go_ontology: BP
+
+paths:
+  expression_input: data/input/expression.csv
+  cnv_input: data/input/cnv.csv
+  drug_response_input: data/input/drug_response.csv
+  pathway_genes_input: data/input/erbb2_pathway_genes.txt
+
+  prepared_dir: results/01_prepared
+  prepared_expression: results/01_prepared/expression_filtered.csv
+  prepared_cnv: results/01_prepared/cnv_filtered.csv
+  prepared_drug_response: results/01_prepared/drug_response_filtered.csv
+  prepared_cell_lines: results/01_prepared/cell_lines_included.csv
+  prepared_pathway_genes: results/01_prepared/pathway_genes_used.txt
+
+  feature_dir: results/02_features
+  feature_matrix: results/02_features/features_raw.csv
+  target_table: results/02_features/target.csv
+
+  preprocess_dir: results/03_preprocess
+  x_train: results/03_preprocess/X_train.csv
+  x_test: results/03_preprocess/X_test.csv
+  y_train: results/03_preprocess/y_train.csv
+  y_test: results/03_preprocess/y_test.csv
+  selected_features: results/03_preprocess/selected_features.txt
+  selected_expression_genes: results/03_preprocess/selected_expression_genes.txt
+  preprocess_stats: results/03_preprocess/preprocess_stats.json
+
+  bootstrap_dir: results/04_bootstrap
+  x_train_bootstrap: results/04_bootstrap/X_train_bootstrap.csv
+  y_train_bootstrap: results/04_bootstrap/y_train_bootstrap.csv
+  bootstrap_indices: results/04_bootstrap/bootstrap_indices.csv
+
+  modeling_dir: results/05_modeling
+  rf_search_table: results/05_modeling/rf_search_results.csv
+  svr_search_table: results/05_modeling/svr_search_results.csv
+  model_predictions: results/05_modeling/test_predictions.csv
+  rf_model_file: results/05_modeling/rf_model.joblib
+  selected_params_file: results/05_modeling/selected_params.yaml
+
+  evaluation_dir: results/06_evaluation
+  model_metrics: results/06_evaluation/model_metrics.csv
+
+  importance_dir: results/07_importance
+  feature_importance_table: results/07_importance/feature_importance_ranked.csv
+
+  clustering_dir: results/08_clustering
+  feature_clusters: results/08_clustering/feature_clusters.csv
+  representative_features: results/08_clustering/representative_features.csv
+
+  top_features_dir: results/09_top_features
+  top10_features: results/09_top_features/top10_features.csv
+  top10_genes: results/09_top_features/top10_genes.txt
+  background_genes: results/09_top_features/background_genes.txt
+
+  enrichment_dir: results/10_enrichment
+  kegg_results: results/10_enrichment/kegg_enrichment.csv
+  go_results: results/10_enrichment/go_bp_enrichment.csv
+  enrichment_mapping: results/10_enrichment/id_mapping_summary.csv
